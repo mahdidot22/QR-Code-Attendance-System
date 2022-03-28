@@ -10,6 +10,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/constants" />
             <option value="$PROJECT_DIR$/instructor" />
             <option value="$PROJECT_DIR$/student" />
           </set>

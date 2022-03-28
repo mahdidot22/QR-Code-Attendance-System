@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">instructor</string>
+    <string name="app_name">QRA</string>
+    <string name="main_icon">Main icon</string>
 </resources>

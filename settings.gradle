@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "QRA"
 include ':student'
 include ':instructor'
+include ':constants'
