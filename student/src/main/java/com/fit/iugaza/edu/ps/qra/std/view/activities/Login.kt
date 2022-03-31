@@ -1,4 +1,4 @@
-package com.fit.iugaza.edu.ps.qra.std.view
+package com.fit.iugaza.edu.ps.qra.std.view.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -1,12 +1,10 @@
 package com.fit.iugaza.edu.ps.qra.std
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.fit.iugaza.edu.ps.qra.constants.Constants
 import com.fit.iugaza.edu.ps.qra.std.databinding.SplashMainActivityBinding
-import com.fit.iugaza.edu.ps.qra.std.view.Login
+import com.fit.iugaza.edu.ps.qra.std.view.activities.Login
 
 class MainActivity : AppCompatActivity() {
     lateinit var constants: Constants
