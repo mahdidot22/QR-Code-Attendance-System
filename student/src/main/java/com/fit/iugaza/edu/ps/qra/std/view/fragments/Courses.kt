@@ -27,7 +27,7 @@ class Courses : Fragment() {
         courses.add((course("اللغة العبرية")))
         courses.add((course("لغة البرمجة1")))
         courses.add((course("مهارات الإتصال وريادة الأعمال")))
-        binding.rvCourses.adapter = CoursesAdapter(courses)
+        binding.rvCourses.adapter = CoursesAdapter(requireContext(),courses)
         binding.rvCourses.layoutManager = LinearLayoutManager(activity)
         return root
     }

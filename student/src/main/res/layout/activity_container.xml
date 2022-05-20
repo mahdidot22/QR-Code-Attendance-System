@@ -16,19 +16,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            android:gravity="right"
-            android:layout_gravity="bottom">
+            android:layout_gravity="bottom"
+            android:gravity="right">
+
             <TextView
                 android:id="@+id/title"
-                android:textStyle="bold"
-                android:layout_marginEnd="17dp"
-                android:layout_marginStart="17dp"
-                android:textSize="20sp"
-                android:textColor="@color/black"
-                android:text="@string/courses"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="17dp"
+                android:layout_marginEnd="17dp"
+                android:text="@string/courses"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 

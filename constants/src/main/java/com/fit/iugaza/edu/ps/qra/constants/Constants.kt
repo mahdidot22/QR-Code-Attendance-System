@@ -26,6 +26,10 @@ class Constants {
         source.startActivity(Intent(source, destination))
     }
 
+    fun navigation(source: Context, destination: Class<*>, title: String) {
+        source.startActivity(Intent(source, destination).putExtra("title", title))
+    }
+
     fun mainBottomNavigation(
         bottomNavigation: BottomNavigationView,
         courses: Fragment,

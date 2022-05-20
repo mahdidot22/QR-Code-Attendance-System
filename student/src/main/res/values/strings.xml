@@ -18,4 +18,13 @@
     <string name="address">غزة-فلسطين</string>
     <string name="email">example@example.com</string>
     <string name="phone">+970590000000</string>
+    <string name="saturday">السبت</string>
+    <string name="demo_time">10:00-11:00</string>
+    <string name="demo_division">I117</string>
+    <string name="statistics">إحصائيات المساق</string>
+    <string name="total_lectures">العدد الإجمالي للمحاضرات</string>
+    <string name="attended_lectures">عدد المحاضرات التي تم حضورها</string>
+    <string name="lost_lectures">عدد المحاضرات المتغيب عنها</string>
+    <string name="warn">تحذير..!</string>
+    <string name="course_off">نسبة غياب الطالب الكلي من مئة هو:</string>
 </resources>
