@@ -1,5 +1,4 @@
-package com.fit.iugaza.edu.ps.qra.std.view.fragments
-
+package com.fit.iugaza.edu.ps.qra.instructor.view.fragments
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.fit.iugaza.edu.ps.qra.constants.Constants
 import com.fit.iugaza.edu.ps.qra.constants.SessionMng
-import com.fit.iugaza.edu.ps.qra.std.databinding.FragmentSettingsBinding
-import com.fit.iugaza.edu.ps.qra.std.view.activities.Login
+import com.fit.iugaza.edu.ps.qra.instructor.databinding.FragmentSettingsBinding
+import com.fit.iugaza.edu.ps.qra.instructor.view.activities.Login
 
 class Settings : Fragment() {
     private var _binding: FragmentSettingsBinding? = null

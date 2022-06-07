@@ -1,4 +1,19 @@
 <resources>
     <string name="app_name">QRA</string>
     <string name="main_icon">Main icon</string>
+    <string name="login_title">تسجيل الدخول</string>
+    <string name="ins_id">أدخل الرقم الوظيفي</string>
+    <string name="idHint">120220000</string>
+    <string name="login_button">login button</string>
+    <string name="course_name">إسم المساق</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="language">اللغة العربية</string>
+    <string name="languageMain">اللغة</string>
+    <string name="Dark_mode">الوضع مظلم</string>
+    <string name="personal_info">البيانات الشخصية</string>
+    <string name="name">مهدي ديب عمر طه</string>
+    <string name="id">120190000</string>
+    <string name="address">غزة-فلسطين</string>
+    <string name="email">example@example.com</string>
+    <string name="phone">+970590000000</string>
 </resources>

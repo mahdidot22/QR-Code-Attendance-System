@@ -2,9 +2,10 @@ package com.fit.iugaza.edu.ps.qra.instructor
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+
 import com.fit.iugaza.edu.ps.qra.constants.Constants
 import com.fit.iugaza.edu.ps.qra.instructor.databinding.SplashMainActivityBinding
+import com.fit.iugaza.edu.ps.qra.instructor.view.activities.Login
 
 class MainActivity : AppCompatActivity() {
     lateinit var constants: Constants
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         constants = Constants()
         constants.loadSplashScreen {
             runOnUiThread {
-                Toast.makeText(applicationContext, "hi", Toast.LENGTH_SHORT).show()
+                Constants().navigation(source = this, destination = Login::class.java)
                 finish()
             }
         }

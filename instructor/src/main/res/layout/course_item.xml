@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/button_rectangle"
+    app:cardCornerRadius="5dp"
+    android:layout_height="65dp"
+    android:layout_marginStart="17dp"
+    android:layout_marginEnd="17dp"
+    android:layout_marginBottom="11dp"
+    android:clickable="true"
+    android:soundEffectsEnabled="true"
+    android:text="@string/course_name"
+    android:textStyle="bold"
+    android:textSize="20sp"
+    android:textColor="@color/barColor"
+    android:id="@+id/btn_course"
+    android:focusable="true">
+</Button>

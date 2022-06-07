@@ -1,14 +1,13 @@
-package com.fit.iugaza.edu.ps.qra.std.view.fragments
-
+package com.fit.iugaza.edu.ps.qra.instructor.view.fragments
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.fit.iugaza.edu.ps.qra.std.databinding.FragmentCoursesBinding
-import com.fit.iugaza.edu.ps.qra.std.model.course
-import com.fit.iugaza.edu.ps.qra.std.view.adapters.CoursesAdapter
+import com.fit.iugaza.edu.ps.qra.instructor.databinding.FragmentCoursesBinding
+import com.fit.iugaza.edu.ps.qra.instructor.model.course
+import com.fit.iugaza.edu.ps.qra.instructor.view.adapters.CoursesAdapter
 
 
 class Courses : Fragment() {

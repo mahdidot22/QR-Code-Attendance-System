@@ -1,13 +1,11 @@
-package com.fit.iugaza.edu.ps.qra.std.view.activities
-
+package com.fit.iugaza.edu.ps.qra.instructor.view.activities
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fit.iugaza.edu.ps.qra.constants.Constants
-import com.fit.iugaza.edu.ps.qra.std.databinding.ActivityContainerBinding
-import com.fit.iugaza.edu.ps.qra.std.view.fragments.Courses
-import com.fit.iugaza.edu.ps.qra.std.view.fragments.Profile
-import com.fit.iugaza.edu.ps.qra.std.view.fragments.Settings
+import com.fit.iugaza.edu.ps.qra.instructor.databinding.ActivityContainerBinding
+import com.fit.iugaza.edu.ps.qra.instructor.view.fragments.Courses
+import com.fit.iugaza.edu.ps.qra.instructor.view.fragments.Profile
+import com.fit.iugaza.edu.ps.qra.instructor.view.fragments.Settings
 
 class Container : AppCompatActivity() {
     private var _binding: ActivityContainerBinding? = null

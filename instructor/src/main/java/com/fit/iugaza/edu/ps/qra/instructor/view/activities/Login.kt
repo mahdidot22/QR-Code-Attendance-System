@@ -1,12 +1,11 @@
-package com.fit.iugaza.edu.ps.qra.std.view.activities
+package com.fit.iugaza.edu.ps.qra.instructor.view.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fit.iugaza.edu.ps.qra.constants.Constants
 import com.fit.iugaza.edu.ps.qra.constants.SessionMng
-import com.fit.iugaza.edu.ps.qra.std.databinding.ActivityLoginBinding
+import com.fit.iugaza.edu.ps.qra.instructor.databinding.ActivityLoginBinding
 
 
 class Login : AppCompatActivity() {

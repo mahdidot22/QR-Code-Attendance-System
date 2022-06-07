@@ -2,6 +2,7 @@ package com.fit.iugaza.edu.ps.qra.constants
 
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.view.View
 import android.view.Window
@@ -91,4 +92,25 @@ class Constants {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = ContextCompat.getColor(activity, R.color.barColor)
     }
+
+    fun showDialog(
+        context: Context, mainIcon: Int, title: String, msg: String,
+        positiveBtnText: String, negativeBtnText: String?,
+        positiveBtnClickListener: DialogInterface.OnClickListener,
+        negativeBtnClickListener: DialogInterface.OnClickListener?
+    ): androidx.appcompat.app.AlertDialog {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(context)
+            .setTitle(title)
+            .setIcon(mainIcon)
+            .setMessage(msg)
+            .setCancelable(true)
+            .setPositiveButton(positiveBtnText, positiveBtnClickListener)
+        if (negativeBtnText != null)
+            builder.setNegativeButton(negativeBtnText, negativeBtnClickListener)
+        val alert = builder.create()
+        alert.show()
+        return alert
+    }
+
+
 }
