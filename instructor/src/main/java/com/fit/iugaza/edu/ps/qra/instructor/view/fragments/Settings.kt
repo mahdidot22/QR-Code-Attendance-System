@@ -1,9 +1,11 @@
 package com.fit.iugaza.edu.ps.qra.instructor.view.fragments
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatDelegate
 import com.fit.iugaza.edu.ps.qra.constants.Constants
 import com.fit.iugaza.edu.ps.qra.constants.SessionMng
 import com.fit.iugaza.edu.ps.qra.instructor.databinding.FragmentSettingsBinding
@@ -34,6 +36,14 @@ class Settings : Fragment() {
                     }
                 },
                 { _, _ -> })
+        }
+        binding.scDark.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+
         }
         return root
     }

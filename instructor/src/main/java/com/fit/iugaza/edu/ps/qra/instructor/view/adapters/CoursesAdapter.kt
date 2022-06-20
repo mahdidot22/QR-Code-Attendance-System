@@ -3,8 +3,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.fit.iugaza.edu.ps.qra.constants.Constants
 import com.fit.iugaza.edu.ps.qra.instructor.databinding.CourseItemBinding
 import com.fit.iugaza.edu.ps.qra.instructor.model.course
+import com.fit.iugaza.edu.ps.qra.instructor.view.activities.CourseSchedule
 
 class CoursesAdapter(val context: Context, val courses: ArrayList<course>) :
     RecyclerView.Adapter<CoursesAdapter.CourseHolder>() {
@@ -13,6 +15,7 @@ class CoursesAdapter(val context: Context, val courses: ArrayList<course>) :
         fun bind(course: course, context: Context) {
             itemBinding.btnCourse.text = course.name
             itemBinding.btnCourse.setOnClickListener {
+                Constants().navigation(context,CourseSchedule::class.java,itemBinding.btnCourse.text.toString())
             }
         }
     }

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_main_icon"
@@ -12,6 +15,21 @@
         android:roundIcon="@mipmap/ic_main_icon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+        <activity
+            android:name=".view.activities.DivisionStudents"
+            android:exported="false" />
+        <activity
+            android:name=".view.activities.CourseDivisions"
+            android:exported="false" />
+        <activity
+            android:name=".view.activities.ManualAdding"
+            android:exported="false" />
+        <activity
+            android:name=".view.activities.QrGeneration"
+            android:exported="false" />
+        <activity
+            android:name=".view.activities.CourseSchedule"
+            android:exported="false" />
         <activity
             android:name=".view.activities.Container"
             android:configChanges="orientation|screenSize|keyboardHidden"
