@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         _binding = SplashMainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         constants = Constants()
+        Constants().statusBarColor(this)
         constants.loadSplashScreen {
             runOnUiThread {
                 Constants().navigation(source = this, destination = Login::class.java)

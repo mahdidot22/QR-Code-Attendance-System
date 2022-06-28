@@ -1,18 +1,22 @@
 package com.fit.iugaza.edu.ps.qra.constants
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.provider.Settings
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 
@@ -27,8 +31,34 @@ class Constants {
         source.startActivity(Intent(source, destination))
     }
 
+    fun navigation(source: Context, destination: Class<*>,divStudents:ArrayList<String>,courseId: String) {
+        source.startActivity(Intent(source, destination).putExtra("students",divStudents).putExtra("courseId",courseId))
+    }
+
+
     fun navigation(source: Context, destination: Class<*>, title: String) {
         source.startActivity(Intent(source, destination).putExtra("title", title))
+    }
+    fun navigation( courseId: String, source: Context, destination: Class<*>) {
+        source.startActivity(Intent(source, destination).putExtra("courseId", courseId))
+    }
+
+    fun navigation(source: Context, destination: Class<*>, courseName: String, courseId: String) {
+        source.startActivity(
+            Intent(source, destination).putExtra("courseName", courseName).putExtra("courseId", courseId)
+        )
+    }
+
+    fun navigation( startTime: String,startMinute: String,courseId: String, source: Context, destination: Class<*>) {
+        source.startActivity(
+            Intent(source, destination).putExtra("startTime", startTime).putExtra("startMinute",startMinute).putExtra("courseId",courseId)
+        )
+    }
+
+    fun navigation(source: Context, destination: Class<*>, courseId: String, divisionId:String, courseName: String) {
+        source.startActivity(
+            Intent(source, destination).putExtra("divisionId", divisionId).putExtra("courseName",courseName).putExtra("courseId",courseId)
+        )
     }
 
     fun mainBottomNavigation(
@@ -110,6 +140,19 @@ class Constants {
         val alert = builder.create()
         alert.show()
         return alert
+    }
+
+    fun darkNight(isChecked: Boolean) {
+        if (isChecked) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+    }
+
+    @SuppressLint("HardwareIds")
+    fun deviceId(context: Context): String {
+        return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
     }
 
 

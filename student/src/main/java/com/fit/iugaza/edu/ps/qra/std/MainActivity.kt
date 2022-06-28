@@ -11,17 +11,13 @@ class MainActivity : AppCompatActivity() {
     private var _binding: SplashMainActivityBinding? = null
     private val binding get() = _binding!!
 
-    //TODO test login session here
-    override fun onStart() {
-        super.onStart()
-    }
 
-    //TODO fetch data
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = SplashMainActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         constants = Constants()
+        Constants().statusBarColor(this)
         constants.loadSplashScreen {
             runOnUiThread {
                 constants.navigation(source = this, destination = Login::class.java)

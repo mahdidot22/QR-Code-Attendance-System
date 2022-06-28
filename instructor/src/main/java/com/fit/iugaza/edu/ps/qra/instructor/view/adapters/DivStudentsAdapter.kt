@@ -13,7 +13,7 @@ class DivStudentsAdapter(val context: Context, val list: ArrayList<students>) :
         fun bind(student: students) {
             itemBinding.tvStdName.text = student.name
             itemBinding.tvStdId.text = student.id
-            itemBinding.tvMiss.text = student.missLectures
+            itemBinding.tvMiss.text = student.attendedLectures
         }
     }
 

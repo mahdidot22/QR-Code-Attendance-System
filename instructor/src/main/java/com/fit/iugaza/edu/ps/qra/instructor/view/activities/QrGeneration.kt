@@ -4,12 +4,12 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fit.iugaza.edu.ps.qra.constants.Constants
 import com.fit.iugaza.edu.ps.qra.instructor.databinding.ActivityQrGenerationBinding
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
-import java.time.LocalDateTime
 import java.util.*
 
 
@@ -17,6 +17,7 @@ class QrGeneration : AppCompatActivity() {
     private var _binding: ActivityQrGenerationBinding? = null
     private val binding get() = _binding!!
     override fun onCreate(savedInstanceState: Bundle?) {
+        Constants().statusBarColor(this)
         super.onCreate(savedInstanceState)
         _binding = ActivityQrGenerationBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -25,34 +26,38 @@ class QrGeneration : AppCompatActivity() {
             appbar.btnBack.setOnClickListener { finish() }
             btnManualAdding.setOnClickListener {
                 Constants().navigation(
+                    intent.getStringExtra("courseId").toString(),
                     this@QrGeneration,
                     ManualAdding::class.java
                 )
             }
+            val calendar: Calendar = Calendar.getInstance()
+            val hourOfDay: Int = calendar.get(Calendar.HOUR_OF_DAY)
+            val minute: Int = calendar.get(Calendar.MINUTE)
             reload.setOnClickListener {
-                btnQrGenerate.setImageBitmap(
-                    getQrCodeBitmap(
-                        "${Calendar.getInstance().time}",
-                        "2468",
-                        "101",
-                        "مثال"
+                if (intent.getStringExtra("startTime")
+                        .toString().toInt() == hourOfDay && intent.getStringExtra("startMinute")
+                        .toString().toInt() + 20 > minute
+                ) {
+                    btnQrGenerate.setImageBitmap(
+                        getQrCodeBitmap(
+                            intent.getStringExtra("courseId").toString()
+                        )
                     )
-                )
-                reload.visibility = View.GONE
+                    reload.visibility = View.GONE
+                }else{
+                    Toast.makeText(this@QrGeneration, "لديك فقط 20 دقيقة من تاريخ بدأ المحاضرة لإنشاء الكود!", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
     }
 
     fun getQrCodeBitmap(
-        generatingTime: String,
-        password: String,
-        division: String,
-        courseName: String
+        courseId: String
     ): Bitmap {
         val size = 512
-        val qrCodeContent = "hello"
-        val bits = QRCodeWriter().encode(qrCodeContent, BarcodeFormat.QR_CODE, size, size)
+        val bits = QRCodeWriter().encode(courseId, BarcodeFormat.QR_CODE, size, size)
         return Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565).also {
             for (x in 0 until size) {
                 for (y in 0 until size) {

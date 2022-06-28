@@ -7,6 +7,10 @@ import com.fit.iugaza.edu.ps.qra.constants.Constants
 import com.fit.iugaza.edu.ps.qra.instructor.databinding.ActivityCourseScheduleBinding
 import com.fit.iugaza.edu.ps.qra.instructor.model.course_appointment
 import com.fit.iugaza.edu.ps.qra.instructor.view.adapters.CoursesAppointmentsAdapter
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class CourseSchedule : AppCompatActivity() {
     private var _binding: ActivityCourseScheduleBinding? = null
@@ -16,23 +20,48 @@ class CourseSchedule : AppCompatActivity() {
         _binding = ActivityCourseScheduleBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Constants().statusBarColor(this)
-        val course = arrayListOf<course_appointment>()
-        course.add(course_appointment("السبت", "10:00-11:30", "I117"))
-        course.add(course_appointment("الثلاثاء", "10:00-11:30", "I117"))
-        course.add(course_appointment("الخميس", "10:00-11:30", "I117"))
+        val db = Firebase.firestore
         binding.apply {
-            appbar.title.text = intent.getStringExtra("title")
+            appbar.title.text = intent.getStringExtra("courseName")
             appbar.btnBack.setOnClickListener {
                 finish()
             }
-            recyclerView.adapter = CoursesAppointmentsAdapter(this@CourseSchedule, course)
-            recyclerView.layoutManager = LinearLayoutManager(this@CourseSchedule)
-
+            getAppointment(db)
             btnDivisions.setOnClickListener {
-                Constants().navigation(this@CourseSchedule, CourseDivisions::class.java)
+                Constants().navigation(intent.getStringExtra("courseId").toString(),this@CourseSchedule, CourseDivisions::class.java)
             }
         }
 
+    }
+    fun getAppointment(db: FirebaseFirestore) {
+        db.collection("QRAcourses").whereEqualTo("courseId", intent.getStringExtra("courseId"))
+            .get().addOnSuccessListener { result ->
+                for (doc in result) {
+                    val course_appointments =
+                        doc.get("courseAppointment") as ArrayList<Map<String, String>>
+                    val list = arrayListOf<course_appointment>()
+                    for (c in course_appointments) {
+                        list.add(
+                            course_appointment(
+                                c["day"]!!,
+                                c["startTime"]!!,
+                                c["startMinute"]!!,
+                                c["endTime"]!!,
+                                c["room"]!!,
+                                intent.getStringExtra("courseId")!!
+                            )
+                        )
+                        binding.recyclerView.adapter =
+                            CoursesAppointmentsAdapter(this@CourseSchedule, list)
+                        binding.recyclerView.layoutManager =
+                            LinearLayoutManager(this@CourseSchedule)
+                    }
+                }
+            }.addOnFailureListener { mag ->
+                mag.localizedMessage?.let {
+                    Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+                }
+            }
     }
 
     override fun onBackPressed() {

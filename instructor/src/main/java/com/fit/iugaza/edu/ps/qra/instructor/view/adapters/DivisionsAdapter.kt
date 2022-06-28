@@ -18,7 +18,7 @@ class DivisionsAdapter(val context: Context, val list: ArrayList<divisions>) :
                 tvCourse.text = division.courseName
                 tvDivision.text = division.division
                 btnShowStds.setOnClickListener {
-                    Constants().navigation(context,DivisionStudents::class.java)
+                    Constants().navigation(division.courseId,context,DivisionStudents::class.java)
                 }
             }
         }

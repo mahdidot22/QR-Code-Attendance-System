@@ -1,5 +1,6 @@
 package com.fit.iugaza.edu.ps.qra.instructor.view.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -22,22 +23,36 @@ class CoursesAppointmentsAdapter(val context: Context, val courses: ArrayList<co
     RecyclerView.Adapter<CoursesAppointmentsAdapter.CourseAppointmentHolder>() {
     class CourseAppointmentHolder(private val itemBinding: CourseAppoitmentItemBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
+        @SuppressLint("SetTextI18n")
         fun bind(course: course_appointment, context: Context) {
             itemBinding.apply {
                 tvDay.text = course.day
-                tvTime.text = course.time
-                tvDivision.text = course.division
-                checkDate(tvDay.text.toString(), btnQr,context)
+                tvTime.text = "${course.startTime}:${course.startMinute}-${course.endTime}"
+                tvRoom.text = course.room
+                checkDate(
+                    tvDay.text.toString(),
+                    course.startTime,
+                    course.startMinute,
+                    course.courseId,
+                    btnQr,
+                    context
+                )
             }
         }
 
-        private fun checkDate(day: String, btnQr: Button,context: Context) {
+        private fun checkDate(day: String,startTime:String,startMinute: String,courseId:String, btnQr: Button,context: Context) {
             val date = Date()
             val sdf = SimpleDateFormat("EEEE", Locale("ar"))
             val dayOfTheWeek = sdf.format(date)
             if (day == dayOfTheWeek) {
                 btnQr.background.setColorFilter(Color.parseColor("#4A9D3A"), PorterDuff.Mode.SRC_ATOP);
-                btnQr.setOnClickListener { Constants().navigation(context,QrGeneration::class.java) }
+                btnQr.setOnClickListener { Constants().navigation(
+                    startTime,
+                    startMinute,
+                    courseId,
+                    context,
+                    QrGeneration::class.java
+                ) }
             }
         }
     }

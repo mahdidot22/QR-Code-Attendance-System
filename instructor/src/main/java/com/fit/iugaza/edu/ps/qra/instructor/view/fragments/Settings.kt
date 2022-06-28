@@ -24,10 +24,10 @@ class Settings : Fragment() {
             Constants().showDialog(
                 requireContext(),
                 android.R.drawable.ic_dialog_info,
-                "Logout",
-                "Are You sure",
-                "Yes",
-                "Close",
+                "تسجيل الخروج",
+                "هل أنت متأكد؟",
+                "نعم",
+                "إغلاق",
                 { _, _ ->
                     run {
                         SessionMng(requireActivity()).logout()
@@ -38,12 +38,7 @@ class Settings : Fragment() {
                 { _, _ -> })
         }
         binding.scDark.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            }
-
+            Constants().darkNight(isChecked)
         }
         return root
     }

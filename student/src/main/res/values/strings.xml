@@ -25,6 +25,6 @@
     <string name="total_lectures">العدد الإجمالي للمحاضرات</string>
     <string name="attended_lectures">عدد المحاضرات التي تم حضورها</string>
     <string name="lost_lectures">عدد المحاضرات المتغيب عنها</string>
-    <string name="warn">تحذير..!</string>
-    <string name="course_off">نسبة غياب الطالب الكلي من مئة هو:</string>
+    <string name="warn">تذكير..!</string>
+    <string name="course_off">نسبة حضور الطالب الكلي من مئة هو:</string>
 </resources>

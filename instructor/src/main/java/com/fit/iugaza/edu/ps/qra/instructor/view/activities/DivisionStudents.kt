@@ -8,43 +8,46 @@ import android.os.Bundle
 import android.provider.CalendarContract
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.fit.iugaza.edu.ps.qra.constants.Constants
 import com.fit.iugaza.edu.ps.qra.instructor.R
 import com.fit.iugaza.edu.ps.qra.instructor.databinding.ActivityDivisionStudentsBinding
 import com.fit.iugaza.edu.ps.qra.instructor.model.students
 import com.fit.iugaza.edu.ps.qra.instructor.view.adapters.DivStudentsAdapter
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class DivisionStudents : AppCompatActivity() {
     private var _binding: ActivityDivisionStudentsBinding? = null
     private val binding get() = _binding!!
+    private val db = Firebase.firestore
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityDivisionStudentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val students = arrayListOf<students>()
-        students.add(students("مهدي ديب عمر طه", "120192424", "6%"))
-        students.add(students("محمد محمود أحمد حامد", "120160000", "20%"))
-        students.add(students("سعيد أسعد سعد مسعود", "120180000", "2%"))
-        students.add(students("فؤاد فايز فارس فادي", "120150000", "9%"))
-        students.add(students("مهدي ديب عمر طه", "120192424", "6%"))
-        students.add(students("محمد محمود أحمد حامد", "120160000", "20%"))
-        students.add(students("سعيد أسعد سعد مسعود", "120180000", "2%"))
-        students.add(students("فؤاد فايز فارس فادي", "120150000", "9%"))
-        students.add(students("مهدي ديب عمر طه", "120192424", "6%"))
-        students.add(students("محمد محمود أحمد حامد", "120160000", "20%"))
-        students.add(students("سعيد أسعد سعد مسعود", "120180000", "2%"))
-        students.add(students("فؤاد فايز فارس فادي", "120150000", "9%"))
-        students.add(students("فؤاد فايز فارس فادي", "120150000", "9%"))
-        students.add(students("فؤاد فايز فارس فادي", "120150000", "9%"))
-        students.add(students("فؤاد فايز فارس فادي", "120150000", "9%"))
-        students.add(students("فؤاد فايز فارس فادي", "120150000", "9%"))
-        students.add(students("فؤاد فايز فارس فادي", "120150000", "9%"))
-        students.add(students("فؤاد فايز فارس فادي", "120150000", "9%"))
-        students.add(students("فؤاد فايز فارس فادي", "120150000", "9%"))
+        Constants().statusBarColor(this)
         binding.apply {
             appbar.title.text = "الطلاب"
             appbar.btnBack.setOnClickListener { finish() }
-            stdList.adapter = DivStudentsAdapter(this@DivisionStudents, students)
-            stdList.layoutManager = LinearLayoutManager(this@DivisionStudents)
         }
+        getStudents()
+    }
+  private fun getStudents() {
+        val courseId = intent.getStringExtra("courseId")
+            val stds = arrayListOf<students>()
+                db.collection("QRAcourses").whereEqualTo("courseId", courseId).get().addOnSuccessListener {
+                    it.forEach {course->
+                        val regStudents = course.get("registeredStudents") as ArrayList<*>
+                        regStudents.forEach { std->
+                            db.collection("QRAUser").document("oGa1XzI9d2YsOOFIjBRr").collection("students").whereEqualTo("studentId",std.toString()).get().addOnSuccessListener {res->
+                                res.forEach {stdData->
+                                    stds.add(students(stdData.getString("profile.name").toString(),std.toString(),stdData.get("attending.$courseId").toString()))
+                                    binding.stdList.adapter = DivStudentsAdapter(this,stds)
+                                    binding.stdList.layoutManager = LinearLayoutManager(this)
+                                }
+                            }
+                        }
+                    }
+                }
+
     }
 }

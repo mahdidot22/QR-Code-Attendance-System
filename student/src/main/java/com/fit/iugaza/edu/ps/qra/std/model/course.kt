@@ -1,3 +1,3 @@
 package com.fit.iugaza.edu.ps.qra.std.model
 
-data class course(val name:String)
+data class course(val name:String, val id:String)

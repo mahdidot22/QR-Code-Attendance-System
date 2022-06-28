@@ -15,6 +15,9 @@ import com.budiyev.android.codescanner.*
 import com.fit.iugaza.edu.ps.qra.constants.Constants
 import com.fit.iugaza.edu.ps.qra.std.databinding.ActivityQrScanningBinding
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.zxing.BinaryBitmap
 import com.google.zxing.MultiFormatReader
 import com.google.zxing.NotFoundException
@@ -22,15 +25,20 @@ import com.google.zxing.RGBLuminanceSource
 import com.google.zxing.common.HybridBinarizer
 import java.io.FileNotFoundException
 import java.io.InputStream
+import java.util.*
 
 
 class QrScanning : AppCompatActivity() {
     private val CAMERA_CODE = 200
     var _binding: ActivityQrScanningBinding? = null
     val binding get() = _binding!!
+    private val db = Firebase.firestore
     private lateinit var codeScanner: CodeScanner
-    var _scannerView: CodeScannerView? = null
-    val scannerView get() = _scannerView!!
+    private var _scannerView: CodeScannerView? = null
+    private val scannerView get() = _scannerView!!
+    private val calendar: Calendar = Calendar.getInstance()
+    private val hourOfDay: Int = calendar.get(Calendar.HOUR_OF_DAY)
+    private val minute: Int = calendar.get(Calendar.MINUTE)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityQrScanningBinding.inflate(layoutInflater)
@@ -65,6 +73,8 @@ class QrScanning : AppCompatActivity() {
     }
 
     private fun codeScannerProperties() {
+        val startTime = intent.getStringExtra("startTime")
+        val startMinute = intent.getStringExtra("startMinute")
         // Parameters (default values)
         codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
         codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
@@ -73,24 +83,57 @@ class QrScanning : AppCompatActivity() {
         codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
         codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
         codeScanner.isFlashEnabled = false // Whether to enable flash or not
-
         // Callbacks
-        codeScanner.decodeCallback = DecodeCallback {
+        codeScanner.decodeCallback = DecodeCallback { result ->
             runOnUiThread {
-                Toast.makeText(this, "Scan result: ${it.text}", Toast.LENGTH_LONG).show()
+                if (result.text == intent.getStringExtra("courseId")!!) {
+                    checkScanTime(
+                        startTime.toString().toInt(),
+                        hourOfDay,
+                        startMinute.toString().toInt(),
+                        minute,
+                        result.text
+                    )
+                } else {
+                    Snackbar.make(
+                        binding.root,
+                        "خطأ في تطابق المساقات، يرجى التأكد من مسح الكود الصحيح لهذا المساق.",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
             }
         }
         codeScanner.errorCallback = ErrorCallback { // or ErrorCallback.SUPPRESS
             runOnUiThread {
-                Toast.makeText(
-                    this, "Camera initialization error: ${it.message}",
-                    Toast.LENGTH_LONG
+                Snackbar.make(
+                    binding.root, " خطأ في الكاميرا: ${it.message}",
+                    Snackbar.LENGTH_LONG
                 ).show()
             }
         }
 
         scannerView.setOnClickListener {
             codeScanner.startPreview()
+        }
+    }
+
+    private fun checkScanTime(
+        startTime: Int,
+        hourOfDay: Int,
+        startMinute: Int,
+        minute: Int,
+        courseId: String
+    ) {
+        if (startTime == hourOfDay && startMinute + 10 > minute) {
+            db.collection("QRAUser").document("oGa1XzI9d2YsOOFIjBRr")
+                .collection("students").document("KhU02oC29fMnvvy2RoLd")
+                .update("attending.$courseId", FieldValue.increment(1))
+        } else {
+            Snackbar.make(
+                binding.root,
+                "لقد أفلت الوقت المسموح لتسجيل الحضور في هذا المساق",
+                Snackbar.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -118,7 +161,7 @@ class QrScanning : AppCompatActivity() {
         when (requestCode) {
             CAMERA_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Snackbar.make(binding.root, "Camera request needed!!", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(binding.root, "تحتاج لإذن الكاميرا!!", Snackbar.LENGTH_SHORT)
                         .show()
                 }
             }
@@ -136,7 +179,6 @@ class QrScanning : AppCompatActivity() {
         when (requestCode) {
             111 -> {
                 if (data == null || data.data == null) {
-                    Toast.makeText(this, "null", Toast.LENGTH_SHORT).show()
                     return
                 }
                 val uri: Uri? = data.data
@@ -144,7 +186,7 @@ class QrScanning : AppCompatActivity() {
                     val inputStream: InputStream? = contentResolver.openInputStream(uri!!)
                     var bitmap = BitmapFactory.decodeStream(inputStream)
                     if (bitmap == null) {
-                        Toast.makeText(this, "uri is not a bitmap,$uri", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, " صيغة غير صالحة ,$uri", Toast.LENGTH_SHORT).show()
                         return
                     }
                     val width = bitmap.width
@@ -156,13 +198,17 @@ class QrScanning : AppCompatActivity() {
                     val source = RGBLuminanceSource(width, height, pixels)
                     val bBitmap = BinaryBitmap(HybridBinarizer(source))
                     val reader = MultiFormatReader()
+                    val startTime = intent.getStringExtra("startTime")
+                    val startMinute = intent.getStringExtra("startMinute")
                     try {
                         val result = reader.decode(bBitmap)
-                        Toast.makeText(
-                            this,
-                            "The content of the QR image is: " + result.text,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        checkScanTime(
+                            startTime.toString().toInt(),
+                            hourOfDay,
+                            startMinute.toString().toInt(),
+                            minute,
+                            result.text
+                        )
                     } catch (e: NotFoundException) {
                         Log.e("TAG", "decode exception", e)
                     }

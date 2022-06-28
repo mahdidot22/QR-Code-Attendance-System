@@ -19,7 +19,8 @@ class CoursesAdapter(val context: Context, val courses: ArrayList<course>) :
                 Constants().navigation(
                     context,
                     CourseSchedule::class.java,
-                    itemBinding.btnCourse.text.toString()
+                    itemBinding.btnCourse.text.toString(),
+                    course.id
                 )
             }
         }

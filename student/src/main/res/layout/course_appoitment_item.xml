@@ -36,14 +36,14 @@
             android:layout_marginEnd="7dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tv_Day"
-            app:layout_constraintStart_toEndOf="@+id/tvDivision"
+            app:layout_constraintStart_toEndOf="@+id/tvRoom"
             app:layout_constraintTop_toTopOf="parent"
             />
 
 
 
         <TextView
-            android:id="@+id/tvDivision"
+            android:id="@+id/tvRoom"
             android:layout_width="78dp"
             android:layout_height="31dp"
             android:gravity="center"
