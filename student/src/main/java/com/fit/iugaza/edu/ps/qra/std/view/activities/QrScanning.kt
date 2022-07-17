@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.*
 import com.fit.iugaza.edu.ps.qra.constants.Constants
+import com.fit.iugaza.edu.ps.qra.constants.SessionMng
 import com.fit.iugaza.edu.ps.qra.std.databinding.ActivityQrScanningBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FieldValue
@@ -126,8 +127,14 @@ class QrScanning : AppCompatActivity() {
     ) {
         if (startTime == hourOfDay && startMinute + 10 > minute) {
             db.collection("QRAUser").document("oGa1XzI9d2YsOOFIjBRr")
-                .collection("students").document("KhU02oC29fMnvvy2RoLd")
-                .update("attending.$courseId", FieldValue.increment(1))
+                .collection("students").whereEqualTo("studentId", SessionMng(this).getId("id"))
+                .get().addOnSuccessListener {
+                    for (doc in it) {
+                        db.collection("QRAUser").document("oGa1XzI9d2YsOOFIjBRr")
+                            .collection("students").document(doc.id)
+                            .update("attending.$courseId", FieldValue.increment(1))
+                    }
+                }
         } else {
             Snackbar.make(
                 binding.root,
