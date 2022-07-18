@@ -35,9 +35,9 @@ class QrGeneration : AppCompatActivity() {
             val hourOfDay: Int = calendar.get(Calendar.HOUR_OF_DAY)
             val minute: Int = calendar.get(Calendar.MINUTE)
             reload.setOnClickListener {
-                if (intent.getStringExtra("startTime")
-                        .toString().toInt() == hourOfDay && intent.getStringExtra("startMinute")
-                        .toString().toInt() + 20 > minute
+                if ((intent.getStringExtra("startTime")
+                        .toString().toInt() == hourOfDay) && (intent.getStringExtra("startMinute")
+                        .toString().toInt() + 20) < minute
                 ) {
                     btnQrGenerate.setImageBitmap(
                         getQrCodeBitmap(
