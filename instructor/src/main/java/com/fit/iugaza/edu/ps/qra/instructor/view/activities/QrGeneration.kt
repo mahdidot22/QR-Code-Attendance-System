@@ -37,7 +37,7 @@ class QrGeneration : AppCompatActivity() {
             reload.setOnClickListener {
                 if ((intent.getStringExtra("startTime")
                         .toString().toInt() == hourOfDay) && (intent.getStringExtra("startMinute")
-                        .toString().toInt() + 20) < minute
+                        .toString().toInt() + 20) > minute
                 ) {
                     btnQrGenerate.setImageBitmap(
                         getQrCodeBitmap(
