@@ -125,7 +125,7 @@ class QrScanning : AppCompatActivity() {
         minute: Int,
         courseId: String
     ) {
-        if (startTime == hourOfDay && startMinute + 10 > minute) {
+        if (startTime == hourOfDay && startMinute + 10 < minute) {
             db.collection("QRAUser").document("oGa1XzI9d2YsOOFIjBRr")
                 .collection("students").whereEqualTo("studentId", SessionMng(this).getId("id"))
                 .get().addOnSuccessListener {
@@ -133,6 +133,8 @@ class QrScanning : AppCompatActivity() {
                         db.collection("QRAUser").document("oGa1XzI9d2YsOOFIjBRr")
                             .collection("students").document(doc.id)
                             .update("attending.$courseId", FieldValue.increment(1))
+                        Toast.makeText(this@QrScanning, "Attending done!", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
         } else {

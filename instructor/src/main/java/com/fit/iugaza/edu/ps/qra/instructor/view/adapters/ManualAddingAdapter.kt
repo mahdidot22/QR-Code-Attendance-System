@@ -44,6 +44,11 @@ class ManualAddingAdapter(val context: Context, val courseId: String) :
                                     db.collection("QRAUser").document("oGa1XzI9d2YsOOFIjBRr")
                                         .collection("students").document(doc.id)
                                         .update("attending.$courseId", FieldValue.increment(1))
+                                    Toast.makeText(
+                                        context,
+                                        "Added Successfully!!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                     break
                                 }
                             }
