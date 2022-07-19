@@ -41,6 +41,8 @@ class ManualAddingAdapter(val context: Context, val courseId: String, val msg: V
                     }
                 }
                 btnSave.setOnClickListener {
+                    dialog.visibility = View.VISIBLE
+                    loadMsg.visibility = View.VISIBLE
                     if (!edStdId.text.isNullOrEmpty()) {
                         db.collection("QRAUser").document("oGa1XzI9d2YsOOFIjBRr")
                             .collection("students")
@@ -50,6 +52,8 @@ class ManualAddingAdapter(val context: Context, val courseId: String, val msg: V
                                     db.collection("QRAUser").document("oGa1XzI9d2YsOOFIjBRr")
                                         .collection("students").document(doc.id)
                                         .update("attending.$courseId", FieldValue.increment(1))
+                                    dialog.visibility = View.GONE
+                                    loadMsg.visibility = View.GONE
                                     Constants().createToast(
                                         context as AppCompatActivity,
                                         toastText,
