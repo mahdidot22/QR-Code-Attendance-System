@@ -18,7 +18,7 @@ class ManualAdding : AppCompatActivity() {
         binding.apply {
             appbar.title.text = "إضافة طلاب"
             appbar.btnBack.setOnClickListener { finish() }
-            items.adapter = ManualAddingAdapter(this@ManualAdding,intent.getStringExtra("courseId").toString())
+            items.adapter = ManualAddingAdapter(this@ManualAdding,intent.getStringExtra("courseId").toString(),msg.root,msg.toastText)
             items.layoutManager = LinearLayoutManager(this@ManualAdding)
         }
 

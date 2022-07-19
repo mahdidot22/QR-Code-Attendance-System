@@ -2,9 +2,13 @@ package com.fit.iugaza.edu.ps.qra.instructor.view.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.fit.iugaza.edu.ps.qra.constants.Constants
 import com.fit.iugaza.edu.ps.qra.instructor.databinding.ManualItemBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FieldValue
@@ -13,7 +17,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 
-class ManualAddingAdapter(val context: Context, val courseId: String) :
+class ManualAddingAdapter(val context: Context, val courseId: String, val msg: View, val toastText:TextView) :
     RecyclerView.Adapter<ManualAddingAdapter.ManualViewHolder>() {
     private val list: ArrayList<Int> = arrayListOf(1)
     private val db = Firebase.firestore
@@ -25,8 +29,10 @@ class ManualAddingAdapter(val context: Context, val courseId: String) :
             manualAddingAdapter: ManualAddingAdapter,
             context: Context,
             db: FirebaseFirestore,
-            courseId: String
-        ) {
+            courseId: String,
+            msg: View,
+            toastText: TextView
+            ) {
             manualItemBinding.apply {
                 btnMore.setOnClickListener {
                     if (adapterPosition == list.size - 1) {
@@ -44,11 +50,12 @@ class ManualAddingAdapter(val context: Context, val courseId: String) :
                                     db.collection("QRAUser").document("oGa1XzI9d2YsOOFIjBRr")
                                         .collection("students").document(doc.id)
                                         .update("attending.$courseId", FieldValue.increment(1))
-                                    Toast.makeText(
-                                        context,
-                                        "Added Successfully!!",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    Constants().createToast(
+                                        context as AppCompatActivity,
+                                        toastText,
+                                        msg,
+                                        "تمت الإضافة بنجاح"
+                                    )
                                     break
                                 }
                             }
@@ -58,8 +65,12 @@ class ManualAddingAdapter(val context: Context, val courseId: String) :
                                 }
                             }
                     } else {
-                        Toast.makeText(context, "إملاً الحقول رجاءً", Toast.LENGTH_SHORT).show()
-                    }
+                        Constants().createToast(
+                            context as AppCompatActivity,
+                            toastText,
+                            msg,
+                            "إملأ الحقول! رجاء"
+                        )                    }
                 }
             }
         }
@@ -72,7 +83,7 @@ class ManualAddingAdapter(val context: Context, val courseId: String) :
     }
 
     override fun onBindViewHolder(holder: ManualViewHolder, position: Int) {
-        holder.bind(list, this, context,db,courseId)
+        holder.bind(list, this, context,db,courseId,msg,toastText)
     }
 
     override fun getItemCount(): Int {

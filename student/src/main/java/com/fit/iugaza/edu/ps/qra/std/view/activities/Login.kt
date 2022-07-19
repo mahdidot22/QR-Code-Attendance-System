@@ -1,6 +1,7 @@
 package com.fit.iugaza.edu.ps.qra.std.view.activities
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.fit.iugaza.edu.ps.qra.constants.Constants
 import com.fit.iugaza.edu.ps.qra.constants.SessionMng
@@ -21,7 +22,12 @@ class Login : AppCompatActivity() {
         binding.apply {
             btnLogin.setOnClickListener {
                 if (edStdId.text.isNullOrEmpty()) {
-                    Snackbar.make(binding.root, "fill fields", Snackbar.LENGTH_SHORT).show()
+                    Constants().createToast(
+                        this@Login,
+                        msg.toastText,
+                        msg.root,
+                        "إملأ الحقول!"
+                    )
                 } else {
                     userLogin(edStdId.text.toString())
                 }
@@ -39,50 +45,66 @@ class Login : AppCompatActivity() {
 
     fun userLogin(stdId: String) {
         val mac = Constants().deviceId(this)
-        db.collection("QRAUser")
-            .document("oGa1XzI9d2YsOOFIjBRr").collection("students").get()
-            .addOnSuccessListener { result ->
-                for (doc in result) {
-                    if (doc.getString("mac") == mac && stdId == doc.getString("studentId")) {
-                        SessionMng(this@Login).setId(stdId, "id")
-                        Constants().navigation(
-                            this@Login,
-                            Container::class.java
-                        )
-                        finish()
-                        break
-                    } else if (doc.getString("mac") != mac && stdId != doc.getString("studentId")) {
-                        firstTimeLogin(stdId, mac)
-                        break
-                    } else if (doc.getString("mac") == mac && stdId != doc.getString("studentId")) {
-                        "انتبه! هذا الجهاز تم التسجيل عليه مسبقاً، يرجى إدخال الرقم الصحيح لهذا الجهاز.".let {
-                            Snackbar.make(
-                                binding.root,
-                                it,
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        }
-                        break
-                    } else if (doc.getString("mac") != mac && stdId == doc.getString("studentId")) {
-                        "عذراً لا يمكنك القيام بذلك! أنت تحاول الدخول إلى حسابك من جهاز اخر.".let {
-                            Snackbar.make(
-                                binding.root,
-                                it,
-                                Snackbar.LENGTH_SHORT
-                            ).show()
+        if (Constants().isInternetAvailable(this)){
+            binding.dialog.visibility = View.VISIBLE
+            binding.loadMsg.visibility = View.VISIBLE
+            db.collection("QRAUser")
+                .document("oGa1XzI9d2YsOOFIjBRr").collection("students").get()
+                .addOnSuccessListener { result ->
+                    for (doc in result) {
+                        if (doc.getString("mac") == mac && stdId == doc.getString("studentId")) {
+                            SessionMng(this@Login).setId(stdId, "id")
+                            Constants().navigation(
+                                this@Login,
+                                Container::class.java
+                            )
+                            binding.dialog.visibility = View.GONE
+                            binding.loadMsg.visibility = View.GONE
+                            finish()
+                            break
+                        } else if (doc.getString("mac") != mac && stdId != doc.getString("studentId")) {
+                            firstTimeLogin(stdId, mac)
+                            break
+                        } else if (doc.getString("mac") == mac && stdId != doc.getString("studentId")) {
+                            Constants().createToast(
+                                this@Login,
+                                binding.msg.toastText,
+                                binding.msg.root,
+                                "انتبه! هذا الجهاز تم التسجيل عليه مسبقاً، يرجى إدخال الرقم الصحيح لهذا الجهاز."
+                            )
+                            binding.dialog.visibility = View.GONE
+                            binding.loadMsg.visibility = View.GONE
+                            break
+                        } else if (doc.getString("mac") != mac && stdId == doc.getString("studentId")) {
+                            binding.dialog.visibility = View.GONE
+                            binding.loadMsg.visibility = View.GONE
+                            Constants().createToast(
+                                this@Login,
+                                binding.msg.toastText,
+                                binding.msg.root,
+                                "عذراً لا يمكنك القيام بذلك! أنت تحاول الدخول إلى حسابك من جهاز اخر."
+                            )
+                            break // fix bug
                         }
                     }
                 }
-            }
-            .addOnFailureListener { exception ->
-                exception.localizedMessage?.let {
-                    Snackbar.make(
-                        binding.root,
-                        it,
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                .addOnFailureListener { exception ->
+                    exception.localizedMessage?.let {
+                        Snackbar.make(
+                            binding.root,
+                            it,
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
                 }
-            }
+        }else{
+            Constants().createToast(
+                this,
+                binding.msg.toastText,
+                binding.msg.root,
+                "تأكد من إتصالك بالإنترنت"
+            )
+        }
     }
 
     fun firstTimeLogin(studentId: String, mac: String) {
@@ -98,6 +120,8 @@ class Login : AppCompatActivity() {
                     this@Login,
                     Container::class.java
                 )
+                binding.dialog.visibility = View.GONE
+                binding.loadMsg.visibility = View.GONE
                 finish()
             }
             .addOnFailureListener { e ->

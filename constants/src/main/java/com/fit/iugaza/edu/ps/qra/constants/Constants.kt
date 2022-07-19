@@ -5,6 +5,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.provider.Settings
 import android.view.View
 import android.view.Window
@@ -16,7 +19,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
 
 
@@ -24,6 +26,20 @@ class Constants {
     fun loadSplashScreen(toDo: () -> Unit) {
         Timer().schedule(2000) {
             toDo.invoke()
+        }
+    }
+    fun loadToast(toDo: () -> Unit) {
+        Timer().schedule(3000) {
+            toDo.invoke()
+        }
+    }
+    fun createToast(activity: AppCompatActivity,toastText:TextView,msg:View, text:String){
+        msg.visibility = View.VISIBLE
+        toastText.text = text
+        Constants().loadToast {
+            activity.runOnUiThread {
+                msg.visibility = View.GONE
+            }
         }
     }
 
@@ -155,5 +171,34 @@ class Constants {
         return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
     }
 
+    @SuppressLint("MissingPermission")
+    @Suppress("DEPRECATION")
+    fun isInternetAvailable(context: Context): Boolean {
+        var result = false
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            cm?.run {
+                cm.getNetworkCapabilities(cm.activeNetwork)?.run {
+                    result = when {
+                        hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                        hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                        hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                        else -> false
+                    }
+                }
+            }
+        } else {
+            cm?.run {
+                cm.activeNetworkInfo?.run {
+                    if (type == ConnectivityManager.TYPE_WIFI) {
+                        result = true
+                    } else if (type == ConnectivityManager.TYPE_MOBILE) {
+                        result = true
+                    }
+                }
+            }
+        }
+        return result
+    }
 
 }

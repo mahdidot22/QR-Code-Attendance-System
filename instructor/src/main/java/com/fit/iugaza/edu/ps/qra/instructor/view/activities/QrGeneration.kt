@@ -4,9 +4,9 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.fit.iugaza.edu.ps.qra.constants.Constants
+import com.fit.iugaza.edu.ps.qra.instructor.R
 import com.fit.iugaza.edu.ps.qra.instructor.databinding.ActivityQrGenerationBinding
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
@@ -45,8 +45,13 @@ class QrGeneration : AppCompatActivity() {
                         )
                     )
                     reload.visibility = View.GONE
-                }else{
-                    Toast.makeText(this@QrGeneration, "لديك فقط 20 دقيقة من تاريخ بدأ المحاضرة لإنشاء الكود!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Constants().createToast(
+                        this@QrGeneration,
+                        msg.toastText,
+                        msg.root,
+                        "غير مسموح إنشاء كود بعد 20 دقيقة على بدأ المحاضرة!"
+                    )
                 }
             }
         }

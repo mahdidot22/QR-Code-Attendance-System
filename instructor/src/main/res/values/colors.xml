@@ -10,4 +10,6 @@
     <color name="mainColor">#4A9D3A</color>
     <color name="barColor">#DBEBD7</color>
     <color name="mainColorLight">#92DD80</color>
+    <color name="green">#4CAF50</color>
+    <color name="orange">@android:color/holo_orange_dark</color>
 </resources>

@@ -96,11 +96,12 @@ class QrScanning : AppCompatActivity() {
                         result.text
                     )
                 } else {
-                    Snackbar.make(
-                        binding.root,
+                    Constants().createToast(
+                        this@QrScanning,
+                        binding.msg.toastText,
+                        binding.msg.root,
                         "خطأ في تطابق المساقات، يرجى التأكد من مسح الكود الصحيح لهذا المساق.",
-                        Snackbar.LENGTH_LONG
-                    ).show()
+                    )
                 }
             }
         }
@@ -133,16 +134,21 @@ class QrScanning : AppCompatActivity() {
                         db.collection("QRAUser").document("oGa1XzI9d2YsOOFIjBRr")
                             .collection("students").document(doc.id)
                             .update("attending.$courseId", FieldValue.increment(1))
-                        Toast.makeText(this@QrScanning, "Attending done!", Toast.LENGTH_SHORT)
-                            .show()
+                        Constants().createToast(
+                            this@QrScanning,
+                            binding.msg.toastText,
+                            binding.msg.root,
+                            "تم تسجيل الحضور بنجاح"
+                        )
                     }
                 }
         } else {
-            Snackbar.make(
-                binding.root,
-                "لقد أفلت الوقت المسموح لتسجيل الحضور في هذا المساق",
-                Snackbar.LENGTH_LONG
-            ).show()
+            Constants().createToast(
+                this@QrScanning,
+                binding.msg.toastText,
+                binding.msg.root,
+                "لقد أفلت الوقت المسموح لتسجيل الحضور في هذا المساق"
+            )
         }
     }
 
